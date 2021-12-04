@@ -6,12 +6,117 @@
         <script src="https://d3js.org/d3.v7.min.js"></script>
         <script src="https://d3js.org/topojson.v3.min.js"></script>
         <style>
+            h3 {
+                padding: 5px;
+                ;
+                margin: 0;
+                text-align: center;
+            }
+
+            .gridlines line {
+                stroke: #E6E4E4;
+            }
+
+            .gridlines .domain {
+                stroke: #E6E4E4;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            .slide-container {
+                scroll-snap-type: y mandatory;
+                overflow-y: scroll;
+                height: 100vh;
+            }
+
+            .slide {
+                height: 100vh;
+                height: calc(var(--vh, 1vh) * 100);
+            }
+
+            .parallax-init {
+                /* Set height and width*/
+                height: 100vh;
+                width: 100vw;
+                /* Create the parallax scrolling effect */
+                background-attachment: fixed;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+
+            .parallax-bg1 {
+                background-image: url("img/sf-night.jpeg");
+            }
+
+            .list {
+                list-style: none;
+                display: flex;
+                overflow-x: scroll;
+                padding: 20px;
+
+                /* hide scroll bar */
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+
+                /* momentum scroll on iOS */
+                -webkit-overflow-scrolling: touch;
+
+                /* disbable vertical scroll for touch */
+                touch-action: pan-x;
+            }
+
+            /* hide scroll bar */
+            .list::-webkit-scrollbar {
+                display: none;
+            }
+
+            .item {
+                height: 500px;
+                width: 800px;
+                flex-shrink: 0;
+            }
+
+            .item:not(:last-child) {
+                margin-right: 10px;
+            }
+
+            /* hacky fix for padding at the end of the list */
+            .item:last-child {
+                position: relative;
+            }
+
+            .item:last-child::after {
+                position: absolute;
+                left: 100%;
+                height: 1px;
+                width: 20px;
+                display: block;
+                content: "";
+            }
         </style>
     </head>
-    <svg id="cali-map" height="1500" width="1990" style="margin:20px"></svg>
-    <svg id="controllers" height="300" width="1800"></svg>
-    <svg id="billionaire" height="400" width="800"></svg>
-    <svg id="employeement" height="400" width="800"></svg>
+    <div class="parallax-init parallax-bg1"></div>
+    <ul class="list">
+        <li class="item"><svg id="cali-map" height="400" width="500" style="margin:20px"></svg>
+            <svg id="controllers" height="100" width="500"></svg></li>
+        <li class="item">
+            <div id="p2" style="text-align: center;">
+                <h3> San Francisco Bay Area Super-rich Assets (Billion Dollars) </h3>
+            </div><svg id="billionaire" height="500" width="800"></svg>
+        </li>
+        <li class="item">
+            <div id="p2" style="text-align: center;">
+                <h3> San Francisco Bay Area Employment Rate during the Epidemic </h3>
+            </div><svg id="employeement" height="500" width="800"></svg>
+        </li>
+    </ul>
+    </div>
+
+
+
     <script async src="src/techCompany.js"></script>
     <script async src="src/covidChange/billionaire.js"></script>
     <script async src="src/covidChange/employeement.js"></script>

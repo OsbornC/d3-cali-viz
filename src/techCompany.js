@@ -5,9 +5,9 @@
     const svgWidth = svg.attr("width");
     const svgHeight = svg.attr("height");
     const requestData = async function () {
-        const data = await d3.csv("../dataset/companies.csv");
-        const ca = await d3.json("../dataset/caCountiesTopoSimple.json");
-        const gini = await d3.json("../dataset/GINI.json")
+        const data = await d3.csv("dataset/companies.csv");
+        const ca = await d3.json("dataset/caCountiesTopoSimple.json");
+        const gini = await d3.json("dataset/GINI.json")
         const counties = topojson.feature(ca, ca.objects.subunits)
         const projection = d3.geoMercator().fitSize([svgWidth, svgHeight], counties);
         const path = d3.geoPath().projection(projection);
@@ -49,8 +49,8 @@
         const colorScale = d3.scaleSequential(d3.interpolateViridis).domain(extent)
         const layer = svg.append("g");
         controllers.append("rect")
-            .attr("x", 100)
-            .attr("y", 100)
+            .attr("x", 0)
+            .attr("y", 0)
             .attr("height", 50)
             .attr("width", 50)
             .attr("fill", "#ddd")
@@ -65,8 +65,8 @@
                 }
             })
         controllers.append("text")
-            .attr("x", 100)
-            .attr("y", 100)
+            .attr("x", 0)
+            .attr("y", 0)
             .attr("text-anchor", "middle")
             .attr("dominant-baseline", "middle")
             .text("data")
@@ -102,8 +102,8 @@
             .attr("d", d3.geoPath())
 
         controllers.append("rect")
-            .attr("x", 200)
-            .attr("y", 100)
+            .attr("x", 100)
+            .attr("y", 0)
             .attr("height", 50)
             .attr("width", 50)
             .attr("fill", "#ddd")
@@ -118,8 +118,8 @@
                 }
             })
         controllers.append("text")
-            .attr("x", 200)
-            .attr("y", 100)
+            .attr("x", 100)
+            .attr("y", 0)
             .attr("text-anchor", "middle")
             .attr("dominant-baseline", "middle")
             .text("contour")
