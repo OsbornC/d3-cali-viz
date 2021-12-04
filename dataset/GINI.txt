@@ -1,0 +1,57 @@
+United States	0.4815
+California	0.4889
+Alameda County	0.4649
+Amador County	S
+Butte County	0.4868
+Calaveras County	S
+Colusa County	S
+Contra Costa County	0.4700
+Del Norte County	S
+El Dorado County	0.4588
+Fresno County	0.4801
+Glenn County	S
+Humboldt County	0.4682
+Imperial County	0.4719
+Inyo County	0.4117
+Kern County	0.4620
+Kings County	0.4391
+Lake County	0.4691
+Lassen County	0.4312
+Los Angeles County	0.5029
+Madera County	0.4503
+Marin County	0.5234
+Mariposa County	S
+Mendocino County	S
+Merced County	0.4653
+Mono County	S
+Monterey County	0.4595
+Napa County	0.4734
+Nevada County	0.4639
+Orange County	0.4701
+Placer County	0.4472
+Plumas County	S
+Riverside County	0.4515
+Sacramento County	0.4605
+San Benito County	0.4007
+San Bernardino County	0.4426
+San Diego County	0.4666
+San Francisco County	0.5148
+San Joaquin County	0.4550
+San Luis Obispo County	0.4518
+San Mateo County	0.4840
+Santa Barbara County	0.4826
+Santa Clara County	0.4639
+Santa Cruz County	0.4784
+Shasta County	0.4634
+Siskiyou County	0.4506
+Solano County	0.4267
+Sonoma County	0.4584
+Stanislaus County	0.4493
+Sutter County	0.4488
+Tehama County	0.4513
+Trinity County	S
+Tulare County	0.4682
+Tuolumne County	S
+Ventura County	0.4478
+Yolo County	0.4905
+Yuba County	0.4269
