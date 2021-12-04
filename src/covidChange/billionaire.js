@@ -51,9 +51,37 @@
             .join('rect').attr('class', 'bar')
             .attr("fill", "#97CBFF")
             .attr("x", d => nameScale(d.Name))
+            .attr("y", d => moneyScale(0))
+            .attr("height", d => chartHeight - moneyScale(0))
+            .attr("width", nameScale.bandwidth());
+
+        chartArea.selectAll('rect.bar').data(billionData)
+            .join('rect').attr('class', 'bar')
+            .attr("fill", "#97CBFF")
+            .transition()
+            .duration(2000)
+            .attr("x", d => nameScale(d.Name))
             .attr("y", d => moneyScale(d.Wealth_before))
             .attr("height", d => moneyScale(0) - moneyScale(d.Wealth_before))
-            .attr("width", nameScale.bandwidth());
+            .attr("width", nameScale.bandwidth())
+            .delay(function (d, i) {
+                return (i * 100)
+            });
+
+        setTimeout(() => {
+            chartArea.selectAll('rect.bar').data(billionData)
+                .join('rect').attr('class', 'bar')
+                .attr("fill", "#97CBFF")
+                .transition()
+                .duration(2000)
+                .attr("x", d => nameScale(d.Name))
+                .attr("y", d => moneyScale(d.Wealth_after))
+                .attr("height", d => moneyScale(0) - moneyScale(d.Wealth_after))
+                .attr("width", nameScale.bandwidth())
+                .delay(function (d, i) {
+                    return (i * 100)
+                });;
+        }, 3000)
     }
     requestBillionaireData();
 })(window)
