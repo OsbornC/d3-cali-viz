@@ -12,7 +12,7 @@
     const chartHeight = height - margin.top - margin.bottom;
 
     let annotations = billionaireSvg.append("g").attr("id", "annotations");
-    let chartArea = billionaireSvg.append("g").attr("id", "bars")
+    let chartArea = billionaireSvg.append("g").attr("id", "billionaireBars")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
     //import Billionaires data
@@ -72,9 +72,9 @@
             setTimeout(() => {
                 chartArea.selectAll('rect.bar').data(billionData)
                     .join('rect').attr('class', 'bar')
-                    .attr("fill", "#8B1B0D")
                     .transition()
                     .duration(2000)
+                    .attr("fill", "#8B1B0D")
                     .attr("x", d => nameScale(d.Name))
                     .attr("y", d => moneyScale(d.Wealth_after))
                     .attr("height", d => moneyScale(0) - moneyScale(d.Wealth_after))
@@ -95,6 +95,15 @@
             .attr("fill", "#ddd")
             .text("contour")
             .on('click', chartAnimation)
+        window.addEventListener("scroll", scrollAnimation);
+
+        function scrollAnimation() {
+            const triggerBottom = window.innerHeight / 2;
+            const bars = document.querySelector('#billionaireBars');
+            if (bars.getBoundingClientRect().top <= triggerBottom) {
+                chartAnimation()
+            }
+        }
     }
     requestBillionaireData();
 })(window)

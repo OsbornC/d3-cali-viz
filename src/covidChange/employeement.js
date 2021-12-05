@@ -18,8 +18,6 @@
     //import employeement data
     const requestData = async function () {
         const employeeData = await d3.csv("dataset/Employment_rate.csv")
-        console.log(employeeData);
-
 
         //employeement Y axis
         const percentScale = d3.scaleLinear().domain([0.8, 1]).range([chartHeight, 0]);
@@ -47,29 +45,16 @@
             .attr("transform", `translate(${margin.left},${chartHeight+margin.top+10})`)
             .call(bottomAxis);
 
-        //employeement draw the rectangles
-        chartArea.selectAll('rect.bar').data(employeeData)
-            .join('rect').attr('class', 'bar')
-            .attr("fill", "#97CBFF")
-            .attr("x", d => yearScale(d.Year))
-            .attr("y", d => percentScale(0.8))
-            .attr("height", d => chartHeight - percentScale(0.8))
-            .attr("width", yearScale.bandwidth());
+        function startAnimation() {
+            //employeement draw the rectangles
+            chartArea.selectAll('rect.bar').data(employeeData)
+                .join('rect').attr('class', 'bar')
+                .attr("fill", "#97CBFF")
+                .attr("x", d => yearScale(d.Year))
+                .attr("y", d => percentScale(0.8))
+                .attr("height", d => chartHeight - percentScale(0.8))
+                .attr("width", yearScale.bandwidth());
 
-        chartArea.selectAll('rect.bar').data(employeeData)
-            .join('rect').attr('class', 'bar')
-            .attr("fill", "#97CBFF")
-            .transition()
-            .duration(2000)
-            .attr("x", d => yearScale(d.Year))
-            .attr("y", d => percentScale(d.Employee_rate))
-            .attr("height", d => percentScale(0.8) - percentScale(d.Employee_rate))
-            .attr("width", yearScale.bandwidth())
-            .delay(function (d, i) {
-                return (i * 100)
-            });
-
-        setTimeout(() => {
             chartArea.selectAll('rect.bar').data(employeeData)
                 .join('rect').attr('class', 'bar')
                 .attr("fill", "#97CBFF")
@@ -82,8 +67,34 @@
                 .delay(function (d, i) {
                     return (i * 100)
                 });
-        }, 3000)
 
+            setTimeout(() => {
+                chartArea.selectAll('rect.bar').data(employeeData)
+                    .join('rect').attr('class', 'bar')
+                    .attr("fill", "#97CBFF")
+                    .transition()
+                    .duration(2000)
+                    .attr("x", d => yearScale(d.Year))
+                    .attr("y", d => percentScale(d.Employee_rate))
+                    .attr("height", d => percentScale(0.8) - percentScale(d.Employee_rate))
+                    .attr("width", yearScale.bandwidth())
+                    .delay(function (d, i) {
+                        return (i * 100)
+                    });
+            }, 3000)
+        }
+
+        startAnimation()
+
+        window.addEventListener("scroll", scrollAnimation);
+
+        function scrollAnimation() {
+            const triggerBottom = window.innerHeight / 2;
+            const a = document.querySelector('#bars');
+            if (a.getBoundingClientRect().top <= triggerBottom) {
+                startAnimation()
+            }
+        }
     }
     requestData();
 })(window)
