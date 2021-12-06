@@ -6,8 +6,8 @@
     const svgHeight = svg.attr("height");
     const requestData = async function () {
         const data = await d3.csv("dataset/companies.csv");
-        const ca = await d3.json("dataset/caCountiesTopoSimple.json");
-        const gini = await d3.json("dataset/GINI.json")
+        const ca = await d3.json("/caCountiesTopoSimple");
+        const gini = await d3.json("/gini")
         const counties = topojson.feature(ca, ca.objects.subunits)
         const projection = d3.geoMercator().fitSize([svgWidth, svgHeight], counties);
         const path = d3.geoPath().projection(projection);
@@ -92,6 +92,7 @@
                 const _this = this
                 _this.style = "fill: forestgreen"
             })
+
         layer.selectAll("path.contours")
             .data(contours)
             .join("path")
@@ -123,6 +124,7 @@
             .attr("text-anchor", "middle")
             .attr("dominant-baseline", "middle")
             .text("contour")
+
     }
     requestData();
 })(window)

@@ -36,7 +36,6 @@
 
         //Billionaires X axis 
         const names = d3.map(billionData, d => d.Name)
-        //console.log(names);
 
         let nameScale = d3.scaleBand().domain(names).range([0, chartWidth]).padding(0.3);
 
