@@ -48,13 +48,15 @@
         const extent = d3.extent(contours, d => d.value)
         const colorScale = d3.scaleSequential(d3.interpolateViridis).domain(extent)
         const layer = svg.append("g");
+
+        //button 1
         controllers.append("rect")
-            .attr("x", 0)
-            .attr("y", 0)
+            .attr("x", 200)
+            .attr("y", 70)
             .attr("height", 50)
-            .attr("width", 50)
+            .attr("width", 150)
             .attr("fill", "#ddd")
-            .text("contour")
+            .text("Show Company")
             .on('click', function (e) {
                 if (layer.selectAll("circle").attr("visibility") === 'hidden') {
                     layer.selectAll("circle")
@@ -65,15 +67,25 @@
                 }
             })
         controllers.append("text")
-            .attr("x", 0)
-            .attr("y", 0)
+            .attr("x", 275)
+            .attr("y", 95)
             .attr("text-anchor", "middle")
             .attr("dominant-baseline", "middle")
-            .text("data")
+            .text("Show Company")
+            .on('click', function (e) {
+                if (layer.selectAll("circle").attr("visibility") === 'hidden') {
+                    layer.selectAll("circle")
+                        .attr("visibility", "")
+                } else {
+                    layer.selectAll("circle")
+                        .attr("visibility", "hidden")
+                }
+            })
 
+        //company name details
         const companyDetail = controllers.append("text")
-            .attr("x", 10)
-            .attr("y", 20);
+            .attr("x", 5)
+            .attr("y", 150);
 
         layer.selectAll("circle").data(data)
             .join("circle")
@@ -92,7 +104,6 @@
                 const _this = this
                 _this.style = "fill: forestgreen"
             })
-
         layer.selectAll("path.contours")
             .data(contours)
             .join("path")
@@ -102,13 +113,14 @@
             })
             .attr("d", d3.geoPath())
 
+        //button 2
         controllers.append("rect")
-            .attr("x", 100)
-            .attr("y", 0)
+            .attr("x", 500)
+            .attr("y", 70)
             .attr("height", 50)
-            .attr("width", 50)
+            .attr("width", 150)
             .attr("fill", "#ddd")
-            .text("contour")
+            .text("Show Contour")
             .on('click', function (e) {
                 if (layer.selectAll("path.contours").attr("visibility") === 'hidden') {
                     layer.selectAll("path.contours")
@@ -119,12 +131,20 @@
                 }
             })
         controllers.append("text")
-            .attr("x", 100)
-            .attr("y", 0)
+            .attr("x", 570)
+            .attr("y", 95)
             .attr("text-anchor", "middle")
             .attr("dominant-baseline", "middle")
-            .text("contour")
-
+            .text("Show Contour")
+            .on('click', function (e) {
+                if (layer.selectAll("path.contours").attr("visibility") === 'hidden') {
+                    layer.selectAll("path.contours")
+                        .attr("visibility", "")
+                } else {
+                    layer.selectAll("path.contours")
+                        .attr("visibility", "hidden")
+                }
+            })
     }
     requestData();
 })(window)

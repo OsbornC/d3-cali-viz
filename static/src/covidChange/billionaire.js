@@ -85,7 +85,7 @@
         }
         chartAnimation()
 
-        const controllers = d3.select('svg#controllers');
+        const controllers = d3.select('svg#billionaire');
         controllers.append("rect")
             .attr("x", 300)
             .attr("y", 0)
