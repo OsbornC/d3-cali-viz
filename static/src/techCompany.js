@@ -1,150 +1,208 @@
-(function (window) {
-    const svg = d3.select('svg#cali-map');
-    const controllers = d3.select('svg#controllers');
-    const map = svg.append("g");
-    const svgWidth = svg.attr("width");
-    const svgHeight = svg.attr("height");
-    const requestData = async function () {
-        const data = await d3.csv("dataset/companies.csv");
-        const ca = await d3.json("/caCountiesTopoSimple");
-        const gini = await d3.json("/gini")
-        const counties = topojson.feature(ca, ca.objects.subunits)
-        const projection = d3.geoMercator().fitSize([svgWidth, svgHeight], counties);
-        const path = d3.geoPath().projection(projection);
-        data.forEach((d, i) => {
-            d.position = projection([d.Longitude, d.Latitude])
-        })
-        const GINIColorRange = ["#0000ff", "#7345ff", "#a663ff", "#cc7aff", "#ff99ff"];
-        const GINIScale = d3.scaleQuantile()
-            .domain(Object.values(gini))
-            .range(GINIColorRange);
+(function(window) {
+  const svg = d3.select("svg#cali-map");
+  const controllers = d3.select("svg#controllers");
+  const map = svg.append("g");
+  const svgWidth = svg.attr("width");
+  const svgHeight = svg.attr("height");
+  const requestData = async function() {
+    const data = await d3.csv("dataset/companies.csv");
+    const housing = await d3.csv("dataset/housing.csv");
+    const ca = await d3.json("/caCountiesTopoSimple");
+    const gini = await d3.json("/gini");
+    const counties = topojson.feature(ca, ca.objects.subunits);
+    const projection = d3
+      .geoMercator()
+      .fitSize([svgWidth, svgHeight], counties);
+    const path = d3.geoPath().projection(projection);
+    data.forEach((d, i) => {
+      d.position = projection([d.Longitude, d.Latitude]);
+    });
+    housing.forEach((d, i) => {
+      d.position = projection([d.longitude, d.latitude]);
+    });
+    const GINIColorRange = [
+      "#0000ff",
+      "#7345ff",
+      "#a663ff",
+      "#cc7aff",
+      "#ff99ff"
+    ];
+    const GINIScale = d3
+      .scaleQuantile()
+      .domain(Object.values(gini))
+      .range(GINIColorRange);
 
-        map.selectAll(".subunit")
-            .data(counties.features)
-            .enter()
-            .append("path")
-            .attr("d", path)
-            .attr("fill", function (d) {
-                if ((d.properties.fullName in gini) && !(isNaN(gini[d.properties.fullName])))
-                    return GINIScale(gini[d.properties.fullName])
-                else
-                    return '#ddd'
-            })
-            .attr("stroke", "white")
-            .attr("translate", [300, 300]);
+    map
+      .selectAll(".subunit")
+      .data(counties.features)
+      .enter()
+      .append("path")
+      .attr("d", path)
+      .attr("fill", function(d) {
+        if (
+          d.properties.fullName in gini &&
+          !isNaN(gini[d.properties.fullName])
+        )
+          return GINIScale(gini[d.properties.fullName]);
+        else return "#ddd";
+      })
+      .attr("stroke", "white")
+      .attr("translate", [300, 300]);
 
-        function plotZoomed(event) {
-            layer.attr("transform", event.transform)
-            map.attr("transform", event.transform)
-        }
-        const plotZoom = d3.zoom().on("zoom", plotZoomed)
-        svg.call(plotZoom)
-        const contours = d3.contourDensity()
-            .x(d => d.position[0])
-            .y(d => d.position[1])
-            .size([svgWidth, svgHeight])
-            .bandwidth(11)
-            .thresholds(50)(data)
-        const extent = d3.extent(contours, d => d.value)
-        const colorScale = d3.scaleSequential(d3.interpolateViridis).domain(extent)
-        const layer = svg.append("g");
-
-        //button 1
-        controllers.append("rect")
-            .attr("x", 200)
-            .attr("y", 70)
-            .attr("height", 50)
-            .attr("width", 150)
-            .attr("fill", "#ddd")
-            .text("Show Company")
-            .on('click', function (e) {
-                if (layer.selectAll("circle").attr("visibility") === 'hidden') {
-                    layer.selectAll("circle")
-                        .attr("visibility", "")
-                } else {
-                    layer.selectAll("circle")
-                        .attr("visibility", "hidden")
-                }
-            })
-        controllers.append("text")
-            .attr("x", 275)
-            .attr("y", 95)
-            .attr("text-anchor", "middle")
-            .attr("dominant-baseline", "middle")
-            .text("Show Company")
-            .on('click', function (e) {
-                if (layer.selectAll("circle").attr("visibility") === 'hidden') {
-                    layer.selectAll("circle")
-                        .attr("visibility", "")
-                } else {
-                    layer.selectAll("circle")
-                        .attr("visibility", "hidden")
-                }
-            })
-
-        //company name details
-        const companyDetail = controllers.append("text")
-            .attr("x", 5)
-            .attr("y", 150);
-
-        layer.selectAll("circle").data(data)
-            .join("circle")
-            .attr("r", 1)
-            .attr("fill", "forestgreen")
-            .attr("opacity", 0.4)
-            .attr("cx", d => d.position[0])
-            .attr("cy", d => d.position[1])
-            .on("mouseover", function (e) {
-                const _this = this
-                const datum = d3.select(this).datum()
-                _this.style = "fill: darkgreen"
-                companyDetail.text(`${datum["Company Name"]}: ${datum["Company Description"]}`)
-            })
-            .on("mouseout", function (e) {
-                const _this = this
-                _this.style = "fill: forestgreen"
-            })
-        layer.selectAll("path.contours")
-            .data(contours)
-            .join("path")
-            .attr("class", "contours")
-            .attr("fill", d => {
-                return colorScale(d.value)
-            })
-            .attr("d", d3.geoPath())
-
-        //button 2
-        controllers.append("rect")
-            .attr("x", 500)
-            .attr("y", 70)
-            .attr("height", 50)
-            .attr("width", 150)
-            .attr("fill", "#ddd")
-            .text("Show Contour")
-            .on('click', function (e) {
-                if (layer.selectAll("path.contours").attr("visibility") === 'hidden') {
-                    layer.selectAll("path.contours")
-                        .attr("visibility", "")
-                } else {
-                    layer.selectAll("path.contours")
-                        .attr("visibility", "hidden")
-                }
-            })
-        controllers.append("text")
-            .attr("x", 570)
-            .attr("y", 95)
-            .attr("text-anchor", "middle")
-            .attr("dominant-baseline", "middle")
-            .text("Show Contour")
-            .on('click', function (e) {
-                if (layer.selectAll("path.contours").attr("visibility") === 'hidden') {
-                    layer.selectAll("path.contours")
-                        .attr("visibility", "")
-                } else {
-                    layer.selectAll("path.contours")
-                        .attr("visibility", "hidden")
-                }
-            })
+    function plotZoomed(event) {
+      layer.attr("transform", event.transform);
+      map.attr("transform", event.transform);
     }
-    requestData();
-})(window)
+    const plotZoom = d3.zoom().on("zoom", plotZoomed);
+    svg.call(plotZoom);
+    const contours = d3
+      .contourDensity()
+      .x(d => d.position[0])
+      .y(d => d.position[1])
+      .size([svgWidth, svgHeight])
+      .bandwidth(11)
+      .thresholds(50)(data);
+    const extent = d3.extent(contours, d => d.value);
+    const colorScale = d3.scaleSequential(d3.interpolateViridis).domain(extent);
+    const layer = svg.append("g");
+
+    //button 1
+    controllers
+      .append("rect")
+      .attr("x", 200)
+      .attr("y", 70)
+      .attr("height", 50)
+      .attr("width", 150)
+      .attr("fill", "#ddd")
+      .text("Show Company")
+      .on("click", function(e) {
+        if (layer.selectAll("circle").attr("visibility") === "hidden") {
+          layer.selectAll("circle").attr("visibility", "");
+        } else {
+          layer.selectAll("circle").attr("visibility", "hidden");
+        }
+      });
+    controllers
+      .append("text")
+      .attr("x", 275)
+      .attr("y", 95)
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "middle")
+      .text("Show Company")
+      .on("click", function(e) {
+        if (layer.selectAll("circle").attr("visibility") === "hidden") {
+          layer.selectAll("circle").attr("visibility", "");
+        } else {
+          layer.selectAll("circle").attr("visibility", "hidden");
+        }
+      });
+
+    //company name details
+    const companyDetail = controllers
+      .append("text")
+      .attr("x", 5)
+      .attr("y", 150);
+
+    layer
+      .selectAll("circle")
+      .data(housing)
+      .join("circle")
+      .attr("r", 1)
+      .attr("fill", "forestgreen")
+      .attr("opacity", 0.4)
+      .attr("cx", d => d.position[0])
+      .attr("cy", d => d.position[1]);
+    //   .on("mouseover", function(e) {
+    //     const _this = this;
+    //     const datum = d3.select(this).datum();
+    //     _this.style = "fill: darkgreen";
+    //     companyDetail.text(
+    //       `${datum["Company Name"]}: ${datum["Company Description"]}`
+    //     );
+    //   })
+    //   .on("mouseout", function(e) {
+    //     const _this = this;
+    //     _this.style = "fill: forestgreen";
+    //   });
+    layer
+      .selectAll("path.contours")
+      .data(contours)
+      .join("path")
+      .attr("class", "contours")
+      .attr("fill", d => {
+        return colorScale(d.value);
+      })
+      .attr("d", d3.geoPath());
+
+    //button 2
+    controllers
+      .append("rect")
+      .attr("x", 500)
+      .attr("y", 70)
+      .attr("height", 50)
+      .attr("width", 150)
+      .attr("fill", "#ddd")
+      .text("Show Contour")
+      .on("click", function(e) {
+        if (layer.selectAll("path.contours").attr("visibility") === "hidden") {
+          layer.selectAll("path.contours").attr("visibility", "");
+        } else {
+          layer.selectAll("path.contours").attr("visibility", "hidden");
+        }
+      });
+    controllers
+      .append("text")
+      .attr("x", 570)
+      .attr("y", 95)
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "middle")
+      .text("Show Contour")
+      .on("click", function(e) {
+        if (layer.selectAll("path.contours").attr("visibility") === "hidden") {
+          layer.selectAll("path.contours").attr("visibility", "");
+        } else {
+          layer.selectAll("path.contours").attr("visibility", "hidden");
+        }
+      });
+
+    function drawLegend(legend, legendColorScale) {
+      const legendWidth = legend.attr("width");
+      const legendHeight = legend.attr("height");
+      const legendExtent = d3.extent(legendColorScale.domain());
+      const barHeight = 25;
+
+      const pixelScale = d3
+        .scaleLinear()
+        .domain([0, legendWidth - 40])
+        .range([legendExtent[0], legendExtent[1]]);
+      const barScale = d3
+        .scaleLinear()
+        .domain([legendExtent[0], legendExtent[1]])
+        .range([0, legendWidth - 40]);
+      const barAxis = d3.axisBottom(barScale);
+      if (legendColorScale.hasOwnProperty("quantiles")) {
+        barAxis.tickValues(legendColorScale.quantiles().concat(legendExtent));
+      }
+      legend
+        .append("g")
+        .attr("transform", "translate(" + 20 + "," + (barHeight + 5) + ")")
+        .call(barAxis);
+
+      let bar = legend
+        .append("g")
+        .attr("transform", "translate(" + 20 + "," + 0 + ")");
+      for (let i = 0; i < legendWidth - 40; i++) {
+        bar
+          .append("rect")
+          .attr("x", i)
+          .attr("y", 0)
+          .attr("width", 1)
+          .attr("height", barHeight)
+          .style("fill", legendColorScale(pixelScale(i)));
+      }
+    }
+
+    drawLegend(d3.select("#cali-map"), GINIScale);
+  };
+  requestData();
+})(window);
