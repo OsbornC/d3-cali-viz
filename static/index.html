@@ -62,6 +62,25 @@
                 text-align: justify;
                 margin: 200px 20% 20%;
             }
+
+            .rectangle {
+                fill: #b5b35c;
+            }
+
+            .rectangle:hover {
+                fill: #efdecd;
+            }
+
+            .axis {
+                font: 10px sans-serif;
+            }
+
+            .axis path,
+            .axis line {
+                fill: none;
+                stroke: #000;
+                shape-rendering: crispEdges;
+            }
         </style>
     </head>
     <div class="parallax-start parallax-hero front">
@@ -95,9 +114,18 @@
             </div><svg id="employeement" height="500" width="800"></svg>
         </div>
     </div>
+    <div class="parallax">
+        <div class="box">
+            <div style="text-align: center;">
+                <h3> San Francisco Crime </h3>
+            </div>
+            <div id="drop"></div><svg id="crime" height="500" width="800"></svg>
+        </div>
+    </div>
     <script async src="src/techCompany.js"></script>
     <script async src="src/covidChange/billionaire.js"></script>
     <script async src="src/covidChange/employeement.js"></script>
+    <script async src="src/sf-crime.js"></script>
     </p>
 </body>
 
