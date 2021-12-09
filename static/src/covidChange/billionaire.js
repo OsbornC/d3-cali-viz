@@ -85,14 +85,23 @@
         }
         chartAnimation()
 
-        const controllers = d3.select('svg#billionaire');
+        const controllers = d3.select('svg#controllers2');
         controllers.append("rect")
-            .attr("x", 300)
-            .attr("y", 0)
+            .attr("x", 320)
+            .attr("y", 55)
             .attr("height", 50)
-            .attr("width", 50)
+            .attr("width", 150)
             .attr("fill", "#ddd")
             .text("contour")
+            .on('click', chartAnimation)
+            .text("Restart Animation")
+        controllers
+            .append("text")
+            .attr("x", 393)
+            .attr("y", 80)
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "middle")
+            .text("Restart Animation")
             .on('click', chartAnimation)
         window.addEventListener("scroll", scrollAnimation);
 

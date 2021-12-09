@@ -85,6 +85,24 @@
         }
 
         startAnimation()
+        const controllers = d3.select('svg#controllers3');
+        controllers.append("rect")
+            .attr("x", 320)
+            .attr("y", 55)
+            .attr("height", 50)
+            .attr("width", 150)
+            .attr("fill", "#ddd")
+            .text("contour")
+            .on('click', startAnimation)
+            .text("Restart Animation")
+        controllers
+            .append("text")
+            .attr("x", 393)
+            .attr("y", 80)
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "middle")
+            .text("Restart Animation")
+            .on('click', startAnimation)
 
         window.addEventListener("scroll", scrollAnimation);
 
