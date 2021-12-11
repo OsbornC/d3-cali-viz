@@ -1,6 +1,6 @@
 (function (window) {
     const requestData = async function () {
-        const data = await d3.csv('dataset/sf_crime.csv');
+        const crimeData = await d3.csv('dataset/sf_crime.csv');
         var margin3 = {
                 top: 80,
                 right: 180,
@@ -11,7 +11,10 @@
             height3 = 600 - margin3.top - margin3.bottom;
 
         // Get every column value
-        var elements = Object.keys(data[0])
+        var data = crimeData.filter(function (d) {
+            return (d["District"] != "all")
+        })
+        var elements = Object.keys(crimeData[0])
             .filter(function (d) {
                 return (d != "District");
             });
@@ -31,7 +34,7 @@
             })
         };
         var yScale = d3.scaleLinear()
-            .domain([0, max_y])
+            .domain([0, parseInt(max_y) + 3000])
             .range([height3, 0]);
         var xScale = d3.scaleBand()
             .domain(data.map(function (d) {
@@ -50,7 +53,7 @@
             .selectAll("text")
             .style("font-size", "8px")
             .style("text-anchor", "middle")
-            .attr("dx", "-.8em")
+        //.attr("dx", "-.8em")
         svg3.append("g")
             .attr("class", "y axis")
             .call(yAxis)
@@ -64,7 +67,7 @@
             .attr("dx", width3 / 2)
             .attr("dy", -height3 + 700)
             .style("font-size", "15px")
-            .text("Year");
+            .text("District");
 
         svg3.append("text")
             .attr("class", "y label")
@@ -78,7 +81,7 @@
             .enter()
             .append("rect")
             .attr("class", "rectangle")
-            .attr("width", width3 / data.length)
+            .attr("width", (width3 / data.length) - 5)
             .attr("height", function (d) {
                 console.log(max_y)
                 return height3 - yScale(d[selection]);
@@ -101,7 +104,7 @@
             .on("change", function (d) {
                 selection = document.getElementById("dropdown");
                 console.log
-                yScale.domain([0, max_y]);
+                yScale.domain([0, parseInt(max_y) + 3000]);
 
                 yAxis.scale(yScale);
 

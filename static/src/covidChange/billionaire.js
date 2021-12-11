@@ -103,6 +103,37 @@
             .attr("dominant-baseline", "middle")
             .text("Restart Animation")
             .on('click', chartAnimation)
+
+
+        // new lengend
+        controllers.append("rect")
+            .attr("x", 600)
+            .attr("y", 55)
+            .attr("height", 10)
+            .attr("width", 10)
+            .attr("fill", "#97CBFF")
+        controllers
+            .append("text")
+            .attr("x", 685)
+            .attr("y", 62)
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "middle")
+            .text("Before Pendamic")
+
+        controllers.append("rect")
+            .attr("x", 600)
+            .attr("y", 80)
+            .attr("height", 10)
+            .attr("width", 10)
+            .attr("fill", "#8B1B0D")
+        controllers
+            .append("text")
+            .attr("x", 681)
+            .attr("y", 87)
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "middle")
+            .text("After Pendamic")
+
         window.addEventListener("scroll", scrollAnimation);
 
         function scrollAnimation() {
