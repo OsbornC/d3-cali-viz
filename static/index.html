@@ -4,6 +4,7 @@
 
     <head>
         <script src="https://d3js.org/d3.v7.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
         <script src="https://d3js.org/topojson.v3.min.js"></script>
         <style>
             h3 {
@@ -81,6 +82,84 @@
                 stroke: #000;
                 shape-rendering: crispEdges;
             }
+
+            .container {
+                width: 800px;
+                margin: 15px auto;
+
+            }
+
+            .flex {
+                display: flex;
+                text-align: center;
+            }
+
+            .flex div.item {
+                display: inline-block;
+                margin: 50px 40px 0 0;
+                position: relative;
+            }
+
+            button {
+                padding: 5px;
+                display: inline-block;
+                min-width: 70px;
+            }
+
+            #btns {
+                text-align: center;
+            }
+
+            button.active {
+                background-color: #31a354;
+                color: #fff;
+                border-color: #31a354;
+                border-radius: 5px;
+            }
+
+            .year {
+                position: absolute;
+                text-align: center;
+                line-height: 200px;
+                left: 5;
+                top: 0;
+                width: 100%;
+                font-weight: bold;
+                font-family: sans-serif;
+                font-size: 24px;
+            }
+
+            #types {
+                margin-top: 20px;
+            }
+
+            #types span {
+                font-size: 12px;
+                margin-right: 20px;
+                margin-bottom: 5px;
+                margin-left: 10px;
+
+            }
+
+            #types i {
+                display: inline-block;
+                width: 20px;
+                height: 10px;
+                border-radius: 5px;
+                margin-right: 5px;
+
+
+            }
+
+            #num1 span,
+            #num2 span,
+            #num3 span {
+                display: block;
+                text-align: left;
+                margin-left: 15px;
+                font-size: 12px;
+                line-height: 1.4;
+            }
         </style>
     </head>
     <div class="parallax-start parallax-hero front">
@@ -99,7 +178,8 @@
     <div class="parallax">
         <div class="box"><svg id="cali-map" height="400" width="800" style="margin:20px"></svg>
             <svg id="graph" height="150" width="200"></svg>
-            <svg id="controllers" height="200" width="800"></svg></div>
+            <svg id="legend" height="50" width="800"></svg>
+            <svg id="controllers" height="220" width="800"></svg></div>
     </div>
     <div class="parallax">
         <div class="box">
@@ -127,10 +207,79 @@
             <div id="drop"></div><svg id="crime" height="500" width="800"></svg>
         </div>
     </div>
+    <div class="parallax">
+        <div class="box">
+            <div style="text-align: center;">
+                <h3> San Francisco Crime Type</h3>
+
+                <div class="container">
+                    <div id="btns">
+                        <button class="active" data-id="all" id="all">All</button>
+                        <button data-id="Bayview">Bayview</button>
+                        <button data-id="Central">Central</button>
+                        <button data-id="Ingleside">Ingleside</button>
+                        <button data-id="Mission">Mission</button>
+                        <button data-id="Northern">Northern</button>
+                        <button data-id="Park">Park</button>
+                        <button data-id="Richmond">Richmond</button>
+                        <button data-id="Southern">Southern</button>
+                        <button data-id="Taraval">Taraval</button>
+                        <button data-id="Tenderloin">Tenderloin</button>
+                        <button data-id="Courtesy Reports">Courtesy Reports</button>
+
+                    </div>
+                </div>
+
+                <div id="types">
+                    <!-- <span><i class="s1"></i></span> -->
+                </div>
+                <div class="flex">
+                    <div class="item">
+                        <div id="chart">
+
+                        </div>
+                        <div class="year">
+                            2017
+                        </div>
+                        <div id="num1">
+
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div id="chart2">
+
+                        </div>
+                        <div class="year">
+                            2018
+                        </div>
+                        <div id="num2">
+
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div id="chart3">
+
+                        </div>
+                        <div class="year">
+                            2019
+                        </div>
+                        <div id="num3">
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
     <script async src="src/techCompany.js"></script>
     <script async src="src/covidChange/billionaire.js"></script>
     <script async src="src/covidChange/employeement.js"></script>
     <script async src="src/sf-crime.js"></script>
+    <script async src="src/sf-crime2.js"></script>
+    <script async src="src/citesource.js"></script>
+    <script src="src/jquery.js"></script>
     </p>
 </body>
 
