@@ -4,7 +4,6 @@
 
     <head>
         <script src="https://d3js.org/d3.v7.min.js"></script>
-        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
         <script src="https://d3js.org/topojson.v3.min.js"></script>
         <style>
             h3 {
@@ -55,7 +54,7 @@
             .box1 {
                 background-color: snow;
                 width: 800px;
-                height: 700px;
+                height: 600px;
                 border-radius: 20px;
                 margin: 0 auto;
                 box-shadow: 2px 4px 5px whitesmoke;
@@ -192,9 +191,11 @@
 
     <div class="parallax">
         <div class="box1">
-            <svg id="legend" height="50" width="800"></svg>
+            <svg id="gini-legend" height="50" width="800"></svg>
             <svg id="cali-map" height="400" width="800" style="margin:0px"></svg>
-            <p>Please use the fliter:</p>
+            <g id="filter-indicator">
+                <text>Please use the fliter:</text>
+            </g>
             <div class="box2" height="200" width="800">
                 <svg id="graph" height="190" width="190"></svg>
                 <svg id="controllers" height="190" width="590"></svg>

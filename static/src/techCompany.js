@@ -46,6 +46,7 @@
 
   function handleHousingClick(layer, housing, map, housingScale, counties, path) {
     currentTab = 'HOUSING'
+    d3.selectAll(".tech-company-tooltip").attr("display", "none")
     layer
       .selectAll("circle.housing")
       .data(housing)
@@ -88,6 +89,7 @@
 
   function handleCompanyClick(layer, data, companyDetail, companyURL, companyAddress, companyCity, map, counties, path) {
     currentTab = 'TECH'
+    d3.selectAll(".tech-company-tooltip").attr("display", "")
     layer
       .selectAll("circle.company")
       .data(data)
@@ -104,7 +106,7 @@
         _this.style = "fill: darkgreen;";
         _this.r = 3
         companyDetail.text(
-          `${datum["Company Name"]}`
+          `Company: ${datum["Company Name"]}`
         );
         companyAddress.text(`Address: ${datum["Address 1"]}`)
         companyURL.text(`Website: ${datum["Website"]}`)
@@ -153,7 +155,6 @@
       .text("Show Tech Company")
       .on("click", function (e) {
         handleCompanyClick(layer, data, companyDetail, companyURL, companyAddress, companyCity, map, counties, path)
-
       });
     controllers
       .append("text")
@@ -250,6 +251,7 @@
   }
 
   function showGINI(map, counties, path, gini, GINIScale) {
+    d3.selectAll(".tech-company-tooltip").attr("display", "none")
     map
       .selectAll("path.county")
       .data(counties.features)
@@ -273,11 +275,13 @@
   }
 
   function showBrush() {
-    d3.select("#graph").attr("visibility", "visibile")
+    d3.select("#graph").attr("visibility", "visible")
+    d3.select("#filter-indicator").style("display", "")
   }
 
   function hideBrush() {
     d3.select("#graph").attr("visibility", "hidden")
+    d3.select("#filter-indicator").style("display", "none")
   }
 
   const requestData = async function () {
@@ -423,11 +427,10 @@
       .attr("opacity", 0.4)
       .attr("cx", d => d.position[0])
       .attr("cy", d => d.position[1]);
-    //button 2
     showCompany(controllers, layer, data, map, counties, path)
     giniButton(controllers, layer, drawGINI, map, counties, path, gini, GINIScale)
 
-    drawLegend(d3.select("#legend"), GINIScale)
+    drawLegend(d3.select("#gini-legend"), GINIScale)
     hideBrush()
     hideCircles(layer)
   };
