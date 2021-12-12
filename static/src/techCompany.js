@@ -285,10 +285,10 @@
   }
 
   const requestData = async function () {
-    const data = await d3.csv("dataset/companies.csv");
-    const housing = await d3.csv("dataset/housing.csv");
-    const ca = await d3.json("/caCountiesTopoSimple");
-    const gini = await d3.json("/gini");
+    const data = await d3.csv("static/dataset/companies.csv");
+    const housing = await d3.csv("static/dataset/housing.csv");
+    const ca = await d3.json("static/dataset/caCountiesTopoSimple.json");
+    const gini = await d3.json("static/dataset/gini.json");
     const GINIColorRange = [
       "#0000ff",
       "#7345ff",

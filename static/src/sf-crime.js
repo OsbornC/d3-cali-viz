@@ -1,6 +1,6 @@
 (function (window) {
     const requestData = async function () {
-        const crimeData = await d3.csv('dataset/sf_crime.csv');
+        const crimeData = await d3.csv('static/dataset/sf_crime.csv');
         var margin3 = {
                 top: 80,
                 right: 180,

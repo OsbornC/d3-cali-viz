@@ -17,7 +17,7 @@
 
     //import Billionaires data
     const requestBillionaireData = async function () {
-        const billionData = await d3.csv("dataset/Billionaires_Data.csv")
+        const billionData = await d3.csv("static/dataset/Billionaires_Data.csv")
         console.log(billionData);
         //Billionaires Y axis
         let moneyScale = d3.scaleLinear().domain([0, 210000]).range([chartHeight, 0]);
@@ -75,7 +75,7 @@
                 .attr("x", d => nameScale(d.Name) + 5)
                 .attr("width", nameScale.bandwidth() - 10)
                 .attr("height", nameScale.bandwidth() - 10)
-                .attr("xlink:href", d => `img/human_figure/${d.Name}.jpg`)
+                .attr("xlink:href", d => `static/img/human_figure/${d.Name}.jpg`)
 
 
 
@@ -108,7 +108,7 @@
                     .attr("x", d => nameScale(d.Name) + 5)
                     .attr("width", nameScale.bandwidth() - 10)
                     .attr("height", nameScale.bandwidth() - 10)
-                    .attr("xlink:href", d => `img/human_figure/${d.Name}.jpg`)
+                    .attr("xlink:href", d => `static/img/human_figure/${d.Name}.jpg`)
                     .delay(function (d, i) {
                         return (i * 100)
                     });;

@@ -1,0 +1,309 @@
+<html>
+
+<body>
+
+    <head>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <script src="https://d3js.org/topojson.v3.min.js"></script>
+        <style>
+            h3 {
+                padding: 5px;
+                margin: 0;
+                text-align: center;
+            }
+
+            .p {
+                margin: 0;
+                padding: 0;
+            }
+
+            .gridlines line {
+                stroke: #E6E4E4;
+            }
+
+            .gridlines .domain {
+                stroke: #E6E4E4;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            .parallax-start {
+                height: 100vh;
+                width: 100vw;
+                background-attachment: fixed;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+
+            .parallax-hero {
+                background-image: url("static/img/sf-night.jpeg");
+            }
+
+            .box {
+                background-color: snow;
+                width: 800px;
+                height: 600px;
+                border-radius: 20px;
+                margin: 0 auto;
+                box-shadow: 2px 4px 5px whitesmoke;
+            }
+
+            .box1 {
+                background-color: snow;
+                width: 800px;
+                height: 600px;
+                border-radius: 20px;
+                margin: 0 auto;
+                box-shadow: 2px 4px 5px whitesmoke;
+            }
+
+            .parallax {
+                background-image: url("static/img/homeless.jpeg");
+                min-height: 1000px;
+                background-attachment: fixed;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+
+            .introduction {
+                position: absolute;
+                background-color: rgba(228, 228, 228, 0.9);
+                padding: 20px 20px 20px 20px;
+                text-align: justify;
+                margin: 200px 20% 20%;
+            }
+
+            .rectangle {
+                fill: #b5b35c;
+            }
+
+            .rectangle:hover {
+                fill: #efdecd;
+            }
+
+            .axis {
+                font: 10px sans-serif;
+            }
+
+            .axis path,
+            .axis line {
+                fill: none;
+                stroke: #000;
+                shape-rendering: crispEdges;
+            }
+
+            .container {
+                width: 800px;
+                margin: 15px auto;
+
+            }
+
+            .flex {
+                display: flex;
+                text-align: center;
+            }
+
+            .flex div.item {
+                display: inline-block;
+                margin: 50px 40px 0 0;
+                position: relative;
+            }
+
+            button {
+                padding: 5px;
+                display: inline-block;
+                min-width: 70px;
+            }
+
+            #btns {
+                text-align: center;
+            }
+
+            button.active {
+                background-color: #31a354;
+                color: #fff;
+                border-color: #31a354;
+                border-radius: 5px;
+            }
+
+            .year {
+                position: absolute;
+                text-align: center;
+                line-height: 200px;
+                left: 5;
+                top: 0;
+                width: 100%;
+                font-weight: bold;
+                font-family: sans-serif;
+                font-size: 24px;
+            }
+
+            #types {
+                margin-top: 20px;
+            }
+
+            #types span {
+                font-size: 12px;
+                margin-right: 20px;
+                margin-bottom: 5px;
+                margin-left: 10px;
+
+            }
+
+            #types i {
+                display: inline-block;
+                width: 20px;
+                height: 10px;
+                border-radius: 5px;
+                margin-right: 5px;
+
+
+            }
+
+            #num1 span,
+            #num2 span,
+            #num3 span {
+                display: block;
+                text-align: left;
+                margin-left: 15px;
+                font-size: 12px;
+                line-height: 1.4;
+            }
+        </style>
+    </head>
+    <div class="parallax-start parallax-hero front">
+        <div class="introduction">
+            <h1> SF Bay Area: Behind the Economic Boom </h1>
+            <p>
+                As one of the most dynamic regions in the United States,
+                the growth and development of the San-Francisco(SF) Bay area has injected inexhaustible power into the
+                American economy.
+                But behind this prosperity, the epidemic, the widening gap between the rich and the poor and many more
+                other factors
+                have caused various social problems...
+            </p>
+        </div>
+    </div>
+
+    <div class="parallax">
+        <div class="box1">
+            <svg id="gini-legend" height="50" width="800"></svg>
+            <svg id="cali-map" height="400" width="800" style="margin:0px"></svg>
+            <g id="filter-indicator">
+                <text>Please use the fliter:</text>
+            </g>
+            <div class="box2" height="200" width="800">
+                <svg id="graph" height="190" width="190"></svg>
+                <svg id="controllers" height="190" width="590"></svg>
+            </div>
+        </div>
+    </div>
+
+    <div class="parallax">
+        <div class="box">
+            <div style="text-align: center;">
+                <h3> San Francisco Bay Area Super-rich Assets (Billion Dollars) </h3>
+            </div><svg id="billionaire" height="400" width="800"></svg>
+            <svg id="controllers2" height="200" width="800"></svg>
+        </div>
+    </div>
+    </div>
+
+    <div class="parallax">
+        <div class="box">
+            <div style="text-align: center;">
+                <h3> San Francisco Bay Area Employment Rate during the Epidemic </h3>
+            </div><svg id="employeement" height="400" width="800"></svg>
+            <svg id="controllers3" height="200" width="800"></svg>
+        </div>
+    </div>
+    </div>
+    <div class="parallax">
+        <div class="box">
+            <div style="text-align: center;">
+                <h3> San Francisco Crime </h3>
+            </div>
+            <div id="drop"></div><svg id="crime" height="500" width="800"></svg>
+        </div>
+    </div>
+    <div class="parallax">
+        <div class="box">
+            <div style="text-align: center;">
+                <h3> San Francisco Crime Type</h3>
+
+                <div class="container">
+                    <div id="btns">
+                        <button class="active" data-id="all" id="all">All</button>
+                        <button data-id="Bayview">Bayview</button>
+                        <button data-id="Central">Central</button>
+                        <button data-id="Ingleside">Ingleside</button>
+                        <button data-id="Mission">Mission</button>
+                        <button data-id="Northern">Northern</button>
+                        <button data-id="Park">Park</button>
+                        <button data-id="Richmond">Richmond</button>
+                        <button data-id="Southern">Southern</button>
+                        <button data-id="Taraval">Taraval</button>
+                        <button data-id="Tenderloin">Tenderloin</button>
+                        <button data-id="Courtesy Reports">Courtesy Reports</button>
+
+                    </div>
+                </div>
+
+                <div id="types">
+                    <!-- <span><i class="s1"></i></span> -->
+                </div>
+                <div class="flex">
+                    <div class="item">
+                        <div id="chart">
+
+                        </div>
+                        <div class="year">
+                            2017
+                        </div>
+                        <div id="num1">
+
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div id="chart2">
+
+                        </div>
+                        <div class="year">
+                            2018
+                        </div>
+                        <div id="num2">
+
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div id="chart3">
+
+                        </div>
+                        <div class="year">
+                            2019
+                        </div>
+                        <div id="num3">
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <script async src="static/src/techCompany.js"></script>
+    <script async src="static/src/covidChange/billionaire.js"></script>
+    <script async src="static/src/covidChange/employeement.js"></script>
+    <script async src="static/src/sf-crime.js"></script>
+    <script async src="static/src/sf-crime2.js"></script>
+    <script async src="static/src/citesource.js"></script>
+    <script src="static/src/jquery.js"></script>
+    </p>
+</body>
+
+</html>

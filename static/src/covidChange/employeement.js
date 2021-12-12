@@ -17,7 +17,7 @@
 
     //import employeement data
     const requestData = async function () {
-        const employeeData = await d3.csv("dataset/Employment_rate.csv")
+        const employeeData = await d3.csv("static/dataset/Employment_rate.csv")
 
         //employeement Y axis
         const percentScale = d3.scaleLinear().domain([0.8, 1]).range([chartHeight, 0]);
