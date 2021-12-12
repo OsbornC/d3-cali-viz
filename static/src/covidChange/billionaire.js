@@ -68,6 +68,24 @@
                     return (i * 100)
                 });
 
+            chartArea.selectAll("image")
+                .data(billionData)
+                .join("image")
+                .attr("y", d => moneyScale(d.Wealth_before) + 5)
+                .attr("x", d => nameScale(d.Name) + 5)
+                .attr("width", nameScale.bandwidth() - 10)
+                .attr("height", nameScale.bandwidth() - 10)
+                .attr("xlink:href", d => `img/human_figure/${d.Name}.jpg`)
+
+
+
+            // chartArea.append("image")
+            //     .attr("y", 100)
+            //     .attr("x", 50)
+            //     .attr("width", 40)
+            //     .attr("height", 40)
+            //     .attr("xlink:href", 'img/human_figure/Elon Musk.jpg')
+
             setTimeout(() => {
                 chartArea.selectAll('rect.bar').data(billionData)
                     .join('rect').attr('class', 'bar')
@@ -78,6 +96,19 @@
                     .attr("y", d => moneyScale(d.Wealth_after))
                     .attr("height", d => moneyScale(0) - moneyScale(d.Wealth_after))
                     .attr("width", nameScale.bandwidth())
+                    .delay(function (d, i) {
+                        return (i * 100)
+                    });;
+                chartArea.selectAll("image")
+                    .data(billionData)
+                    .join("image")
+                    .transition()
+                    .duration(2000)
+                    .attr("y", d => moneyScale(d.Wealth_after) + 5)
+                    .attr("x", d => nameScale(d.Name) + 5)
+                    .attr("width", nameScale.bandwidth() - 10)
+                    .attr("height", nameScale.bandwidth() - 10)
+                    .attr("xlink:href", d => `img/human_figure/${d.Name}.jpg`)
                     .delay(function (d, i) {
                         return (i * 100)
                     });;

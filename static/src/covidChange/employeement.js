@@ -45,42 +45,38 @@
             .attr("transform", `translate(${margin.left},${chartHeight+margin.top+10})`)
             .call(bottomAxis);
 
+        const lineGen = d3.line()
+            .x(d => yearScale(d.Year) + yearScale.bandwidth() / 2)
+            .y(d => percentScale(d.Employee_rate))
+            .curve(d3.curveMonotoneX)
+
+        const path = chartArea.append("path")
+            .datum(employeeData)
+            .attr("fill", "none")
+            .attr("stroke", "#97CBFF")
+            .attr("stroke-width", 2)
+            .attr("d", lineGen)
+
         function startAnimation() {
-            //employeement draw the rectangles
-            chartArea.selectAll('rect.bar').data(employeeData)
-                .join('rect').attr('class', 'bar')
-                .attr("fill", "#97CBFF")
-                .attr("x", d => yearScale(d.Year))
-                .attr("y", d => percentScale(0.8))
-                .attr("height", d => chartHeight - percentScale(0.8))
-                .attr("width", yearScale.bandwidth());
-
-            chartArea.selectAll('rect.bar').data(employeeData)
-                .join('rect').attr('class', 'bar')
-                .attr("fill", "#97CBFF")
+            const transitionPath = d3
                 .transition()
-                .duration(2000)
-                .attr("x", d => yearScale(d.Year))
-                .attr("y", d => percentScale(d.Employee_rate))
-                .attr("height", d => percentScale(0.8) - percentScale(d.Employee_rate))
-                .attr("width", yearScale.bandwidth())
-                .delay(function (d, i) {
-                    return (i * 100)
-                });
-
+                .duration(3000);
+            chartArea.select("path")
+                .attr("stroke-dasharray", path.node().getTotalLength())
+                .attr("stroke-dashoffset", path.node().getTotalLength())
+                .transition(transitionPath)
+                .attr("stroke-dashoffset", 0);
+            chartArea.selectAll("circle")
+                .data(employeeData)
+                .join("circle")
+                .attr("r", 5)
+                .attr("fill", "#97CB00")
+                .attr("cx", d => yearScale(d.Year) + yearScale.bandwidth() / 2)
+                .attr("cy", d => percentScale(d.Employee_rate))
+                .attr("visibility", "hidden")
             setTimeout(() => {
-                chartArea.selectAll('rect.bar').data(employeeData)
-                    .join('rect').attr('class', 'bar')
-                    .attr("fill", "#97CBFF")
-                    .transition()
-                    .duration(2000)
-                    .attr("x", d => yearScale(d.Year))
-                    .attr("y", d => percentScale(d.Employee_rate))
-                    .attr("height", d => percentScale(0.8) - percentScale(d.Employee_rate))
-                    .attr("width", yearScale.bandwidth())
-                    .delay(function (d, i) {
-                        return (i * 100)
-                    });
+                chartArea.selectAll("circle")
+                    .attr("visibility", "visible")
             }, 3000)
         }
 

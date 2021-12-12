@@ -1,6 +1,7 @@
 (function (window) {
   const svg = d3.select("svg#cali-map");
   const controllers = d3.select("svg#controllers");
+  let currentTab = 'GINI';
   controllers.append("svg")
     .attr("id", "brush")
     .attr("x", 700)
@@ -72,25 +73,27 @@
   }
 
   function hideTooltip() {
-    d3.selectAll(".tech-company-tooltip").attr("visibility", "hidden")
+    d3.selectAll(".tooltip").attr("visibility", "hidden")
   }
 
   function showTooltip() {
-    d3.selectAll(".tech-company-tooltip").attr("visibility", "visible")
+    d3.selectAll(".tooltip").attr("visibility", "visible")
   }
 
   function handleHousingClick(layer, housing, map, housingScale, counties, path) {
+    currentTab = 'HOUSING'
     layer
-      .selectAll("circle")
+      .selectAll("circle.housing")
       .data(housing)
       .join("circle")
+      .attr("class", "housing")
       .attr("r", 1)
       .attr("fill", d => housingScale(d["median_house_value"]))
       .attr("opacity", 0.4)
       .attr("cx", d => d.position[0])
       .attr("cy", d => d.position[1]);
     hideGINI(map, counties, path);
-    showCircles(layer)
+    showCircles(layer, 'housing')
     showBrush()
     hideTooltip()
   }
@@ -120,10 +123,12 @@
   }
 
   function handleCompanyClick(layer, data, companyDetail, companyURL, companyAddress, companyCity, map, counties, path) {
+    currentTab = 'TECH'
     layer
-      .selectAll("circle")
+      .selectAll("circle.company")
       .data(data)
       .join("circle")
+      .attr("class", "company")
       .attr("r", 1)
       .attr("fill", "#FF00FF")
       .attr("opacity", 0.4)
@@ -148,9 +153,8 @@
         d3.select(this).attr("r", 1)
       });
     hideGINI(map, counties, path);
-    showCircles(layer)
+    showCircles(layer, 'company')
     hideBrush()
-    showTooltip()
   }
 
   function showCompany(controllers, layer, data, map, counties, path) {
@@ -199,6 +203,14 @@
       });
   }
 
+  function handleGINIClick(layer, drawGINI, map, counties, path, gini, GINIScale, hideBrush, hideTooltip) {
+    currentTab = 'GINI'
+    drawGINI(map, counties, path, gini, GINIScale);
+    hideCircles(layer)
+    hideBrush()
+    hideTooltip()
+  }
+
   function giniButton(controllers, layer, drawGINI, map, counties, path, gini, GINIScale) {
     controllers
       .append("rect")
@@ -209,10 +221,7 @@
       .attr("fill", "#ddd")
       .text("Show GINI")
       .on("click", function (e) {
-        drawGINI(map, counties, path, gini, GINIScale);
-        hideCircles(layer)
-        hideBrush()
-        hideTooltip()
+        handleGINIClick(layer, drawGINI, map, counties, path, gini, GINIScale, hideBrush, hideTooltip)
       });
     controllers
       .append("text")
@@ -222,10 +231,7 @@
       .attr("dominant-baseline", "middle")
       .text("Show GINI")
       .on("click", function (e) {
-        drawGINI(map, counties, path, gini, GINIScale);
-        hideCircles(layer)
-        hideBrush()
-        hideTooltip()
+        handleGINIClick(layer, drawGINI, map, counties, path, gini, GINIScale, hideBrush, hideTooltip)
       });
     const tooltip = svg.append("g").attr("class", "tooltip").attr("visibility", "hidden")
     tooltip.append("rect")
@@ -235,8 +241,8 @@
       .attr("opacity", 0.8)
     const stateName = tooltip.append("text").attr("class", "state-name").attr("x", 0).attr("y", 20)
     const stateGINI = tooltip.append("text").attr("class", "state-gini").attr("x", 0).attr("y", 40)
-    d3.select(".tooltip").attr("visibility", "visible")
     d3.selectAll(".county").on("mouseenter", function () {
+      if (currentTab === 'GINI') showTooltip()
       const datum = d3.select(this).datum()
       if (
         datum.properties.fullName in gini &&
@@ -260,9 +266,12 @@
       .attr("visibility", "hidden")
   }
 
-  function showCircles(layer) {
+  function showCircles(layer, className) {
     layer
       .selectAll("circle")
+      .attr("visibility", "hidden")
+    layer
+      .selectAll(`circle.${className}`)
       .attr("visibility", "visible")
   }
 
@@ -341,10 +350,9 @@
     function brushed({
       selection
     }) {
-      console.log('brush', selection)
       if (!selection) {
         layer
-          .selectAll("circle")
+          .selectAll("circle.housing")
           .data(housing)
           .join("circle")
           .attr("r", 1)
@@ -359,12 +367,7 @@
         ] = selection;
         const start = incomeScale.invert(selection[0][0]);
         const end = incomeScale.invert(selection[1][0]);
-        console.log('ssselection', incomeExtent, selection, incomeScale, start, end)
-        // const filtered = circles.filter(d => {
-        //   console.log('ffffilter', start, end, d["median_income"]);
-        //   return d["median_income"] <= end && start <= d["median_income"]
-        // })
-        layer.selectAll("circle").attr("fill", d => {
+        layer.selectAll("circle.housing").attr("fill", d => {
           if (d["median_income"] <= end && start <= d["median_income"])
             return "green"
           else
@@ -375,21 +378,6 @@
           else
             return 1
         })
-        // console.log('fffiltered', filtered)
-        //   .style("stroke", "steelblue")
-        //   .data();
-        // layer
-        //   .selectAll("circle")
-        //   .data(filtered)
-        //   .join("circle")
-        //   .attr("r", 1)
-        //   .attr("fill", d => housingScale(d["median_house_value"]))
-        //   .attr("opacity", 0.4)
-        //   .attr("cx", d => {
-        //     console.log('cx', d)
-        //     return d.position[0]
-        //   })
-        //   .attr("cy", d => d.position[1]);
       }
 
     }
@@ -473,19 +461,6 @@
       .attr("opacity", 0.4)
       .attr("cx", d => d.position[0])
       .attr("cy", d => d.position[1]);
-    //   .on("mouseover", function(e) {
-    //     const _this = this;
-    //     const datum = d3.select(this).datum();
-    //     _this.style = "fill: darkgreen";
-    //     companyDetail.text(
-    //       `${datum["Company Name"]}: ${datum["Company Description"]}`
-    //     );
-    //   })
-    //   .on("mouseout", function(e) {
-    //     const _this = this;
-    //     _this.style = "fill: forestgreen";
-    //   });
-
     //button 2
     showCompany(controllers, layer, data, map, counties, path)
     giniButton(controllers, layer, drawGINI, map, counties, path, gini, GINIScale)
@@ -493,15 +468,6 @@
     drawLegend(d3.select("#cali-map"), GINIScale)
     hideBrush()
     hideCircles(layer)
-    // brushSvg
-    //   .selectAll("circle")
-    //   .data(housing)
-    //   .join("circle")
-    //   .attr("r", 1)
-    //   .attr("fill", d => housingScale(d["median_house_value"]))
-    //   .attr("opacity", 0.4)
-    //   .attr("cx", d => housingAgeScale(d["housing_median_age"]))
-    //   .attr("cy", d => incomeScale(d["median_income"]));
   };
   requestData();
 })(window);
