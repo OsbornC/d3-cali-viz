@@ -241,7 +241,7 @@
       .attr("opacity", 0.8)
     const stateName = tooltip.append("text").attr("class", "state-name").attr("x", 0).attr("y", 20)
     const stateGINI = tooltip.append("text").attr("class", "state-gini").attr("x", 0).attr("y", 40)
-    d3.selectAll(".county").on("mouseenter", function () {
+    d3.selectAll(".county").on("mouseenter", function (e) {
       if (currentTab === 'GINI') showTooltip()
       const datum = d3.select(this).datum()
       if (
@@ -251,8 +251,6 @@
         const giniIndex = gini[datum.properties.fullName]
         d3.select(".state-name").text(datum.properties.fullName)
         d3.select(".state-gini").text(`GINI: ${giniIndex}`)
-        const bounds = path.bounds(datum)
-        d3.select(".tooltip").attr("transform", `translate(${(bounds[0][0] + bounds[1][0])/2}, ${bounds[1][1] - 25})`)
       } else {
         d3.select(".state-name").text(datum.properties.fullName)
         d3.select(".state-gini").text("Missing data")
@@ -461,7 +459,6 @@
       .attr("opacity", 0.4)
       .attr("cx", d => d.position[0])
       .attr("cy", d => d.position[1]);
-    //button 2
     showCompany(controllers, layer, data, map, counties, path)
     giniButton(controllers, layer, drawGINI, map, counties, path, gini, GINIScale)
 
