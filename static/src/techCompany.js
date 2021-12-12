@@ -13,43 +13,7 @@
   const svgWidth = svg.attr("width");
   const svgHeight = svg.attr("height");
 
-  function drawLegend(legend, legendColorScale) {
-    const legendWidth = legend.attr("width");
-    const legendHeight = legend.attr("height");
-    const legendExtent = d3.extent(legendColorScale.domain());
-    const barHeight = 25;
 
-    const pixelScale = d3
-      .scaleLinear()
-      .domain([0, legendWidth - 40])
-      .range([legendExtent[0], legendExtent[1]]);
-    const barScale = d3
-      .scaleLinear()
-      .domain([legendExtent[0], legendExtent[1]])
-      .range([0, legendWidth - 40]);
-    const barAxis = d3.axisBottom(barScale);
-    if (legendColorScale.hasOwnProperty("quantiles")) {
-      barAxis.tickValues(legendColorScale.quantiles().concat(legendExtent));
-    }
-    legend
-      .append("g")
-      .attr("id", "gini-annotation")
-      .attr("transform", "translate(" + 20 + "," + (barHeight + 5) + ")")
-      .call(barAxis);
-    let bar = legend
-      .append("g")
-      .attr("id", "gini-legend")
-      .attr("transform", "translate(" + 20 + "," + 0 + ")");
-    for (let i = 0; i < legendWidth - 40; i++) {
-      bar
-        .append("rect")
-        .attr("x", i)
-        .attr("y", 0)
-        .attr("width", 1)
-        .attr("height", barHeight)
-        .style("fill", legendColorScale(pixelScale(i)));
-    }
-  }
 
   function drawGINI(map, counties, path, gini, GINIScale) {
     map
@@ -102,18 +66,18 @@
     //button 1
     controllers
       .append("rect")
-      .attr("x", 200)
-      .attr("y", 70)
+      .attr("x", 10)
+      .attr("y", 40)
       .attr("height", 50)
-      .attr("width", 150)
+      .attr("width", 210)
       .attr("fill", "#ddd")
       .on("click", function (e) {
         handleHousingClick(layer, housing, map, housingScale, counties, path)
       });
     controllers
       .append("text")
-      .attr("x", 275)
-      .attr("y", 95)
+      .attr("x", 115)
+      .attr("y", 65)
       .attr("text-anchor", "middle")
       .attr("dominant-baseline", "middle")
       .text("Show Median House Value")
@@ -181,10 +145,10 @@
       .attr("y", 210)
     controllers
       .append("rect")
-      .attr("x", 500)
-      .attr("y", 70)
+      .attr("x", 250)
+      .attr("y", 40)
       .attr("height", 50)
-      .attr("width", 150)
+      .attr("width", 170)
       .attr("fill", "#ddd")
       .text("Show Tech Company")
       .on("click", function (e) {
@@ -193,8 +157,8 @@
       });
     controllers
       .append("text")
-      .attr("x", 570)
-      .attr("y", 95)
+      .attr("x", 335)
+      .attr("y", 65)
       .attr("text-anchor", "middle")
       .attr("dominant-baseline", "middle")
       .text("Show Tech Company")
@@ -214,10 +178,10 @@
   function giniButton(controllers, layer, drawGINI, map, counties, path, gini, GINIScale) {
     controllers
       .append("rect")
-      .attr("x", 700)
-      .attr("y", 70)
+      .attr("x", 460)
+      .attr("y", 40)
       .attr("height", 50)
-      .attr("width", 150)
+      .attr("width", 100)
       .attr("fill", "#ddd")
       .text("Show GINI")
       .on("click", function (e) {
@@ -225,8 +189,8 @@
       });
     controllers
       .append("text")
-      .attr("x", 770)
-      .attr("y", 95)
+      .attr("x", 505)
+      .attr("y", 65)
       .attr("text-anchor", "middle")
       .attr("dominant-baseline", "middle")
       .text("Show GINI")
@@ -241,7 +205,7 @@
       .attr("opacity", 0.8)
     const stateName = tooltip.append("text").attr("class", "state-name").attr("x", 0).attr("y", 20)
     const stateGINI = tooltip.append("text").attr("class", "state-gini").attr("x", 0).attr("y", 40)
-    d3.selectAll(".county").on("mouseenter", function (e) {
+    d3.selectAll(".county").on("mouseenter", function () {
       if (currentTab === 'GINI') showTooltip()
       const datum = d3.select(this).datum()
       if (
@@ -459,10 +423,11 @@
       .attr("opacity", 0.4)
       .attr("cx", d => d.position[0])
       .attr("cy", d => d.position[1]);
+    //button 2
     showCompany(controllers, layer, data, map, counties, path)
     giniButton(controllers, layer, drawGINI, map, counties, path, gini, GINIScale)
 
-    drawLegend(d3.select("#cali-map"), GINIScale)
+    drawLegend(d3.select("#legend"), GINIScale)
     hideBrush()
     hideCircles(layer)
   };

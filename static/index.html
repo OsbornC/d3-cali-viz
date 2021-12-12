@@ -13,6 +13,11 @@
                 text-align: center;
             }
 
+            .p {
+                margin: 0;
+                padding: 0;
+            }
+
             .gridlines line {
                 stroke: #E6E4E4;
             }
@@ -42,6 +47,15 @@
                 background-color: snow;
                 width: 800px;
                 height: 600px;
+                border-radius: 20px;
+                margin: 0 auto;
+                box-shadow: 2px 4px 5px whitesmoke;
+            }
+
+            .box1 {
+                background-color: snow;
+                width: 800px;
+                height: 700px;
                 border-radius: 20px;
                 margin: 0 auto;
                 box-shadow: 2px 4px 5px whitesmoke;
@@ -175,12 +189,19 @@
             </p>
         </div>
     </div>
+
     <div class="parallax">
-        <div class="box"><svg id="cali-map" height="400" width="800" style="margin:20px"></svg>
-            <svg id="graph" height="150" width="200"></svg>
+        <div class="box1">
             <svg id="legend" height="50" width="800"></svg>
-            <svg id="controllers" height="220" width="800"></svg></div>
+            <svg id="cali-map" height="400" width="800" style="margin:0px"></svg>
+            <p>Please use the fliter:</p>
+            <div class="box2" height="200" width="800">
+                <svg id="graph" height="190" width="190"></svg>
+                <svg id="controllers" height="190" width="590"></svg>
+            </div>
+        </div>
     </div>
+
     <div class="parallax">
         <div class="box">
             <div style="text-align: center;">
@@ -190,6 +211,7 @@
         </div>
     </div>
     </div>
+
     <div class="parallax">
         <div class="box">
             <div style="text-align: center;">
