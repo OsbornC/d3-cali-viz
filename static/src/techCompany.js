@@ -35,17 +35,18 @@
   }
 
   function hideTooltip() {
-    d3.selectAll(".tooltip").attr("visibility", "hidden")
+    d3.selectAll(".tooltip").style("visibility", "hidden")
   }
 
   function showTooltip() {
-    d3.selectAll(".tooltip").attr("visibility", "visible")
+    d3.selectAll(".tooltip").style("visibility", "visible")
   }
 
   function handleHousingClick(layer, housing, map, housingScale, counties, path) {
     currentTab = 'HOUSING'
-    d3.selectAll(".tech-company-tooltip").attr("display", "none")
-    d3.select("#house-legend").attr("display", "")
+    hideCompanyIntro()
+    d3.selectAll(".tech-company-tooltip").style("display", "none")
+    d3.select("#house-legend").style("display", "")
     layer
       .selectAll("circle.housing")
       .data(housing)
@@ -88,8 +89,9 @@
 
   function handleCompanyClick(layer, data, companyDetail, companyURL, companyAddress, companyCity, map, counties, path) {
     currentTab = 'TECH'
-    d3.selectAll(".tech-company-tooltip").attr("display", "")
-    d3.select("#house-legend").attr("display", "none")
+    d3.selectAll(".tech-company-tooltip").style("display", "")
+    d3.select("#house-legend").style("display", "none")
+    showCompanyIntro()
     layer
       .selectAll("circle.company")
       .data(data)
@@ -121,6 +123,14 @@
     hideGINI(map, counties, path);
     showCircles(layer, 'company')
     hideBrush()
+  }
+
+  function showCompanyIntro() {
+    d3.select("#company-intro").style("display", "")
+  }
+
+  function hideCompanyIntro() {
+    d3.selectAll("#company-intro").style("display", "none")
   }
 
   function showCompany(controllers, layer, data, map, counties, path) {
@@ -174,6 +184,8 @@
     hideCircles(layer)
     hideBrush()
     hideTooltip()
+    hideCompanyIntro()
+    d3.select("#house-legend").style("display", "none")
   }
 
   function giniButton(controllers, layer, drawGINI, map, counties, path, gini, GINIScale) {
@@ -226,16 +238,16 @@
   function hideCircles(layer) {
     layer
       .selectAll("circle")
-      .attr("visibility", "hidden")
+      .style("visibility", "hidden")
   }
 
   function showCircles(layer, className) {
     layer
       .selectAll("circle")
-      .attr("visibility", "hidden")
+      .style("visibility", "hidden")
     layer
       .selectAll(`circle.${className}`)
-      .attr("visibility", "visible")
+      .style("visibility", "visible")
   }
 
   function hideGINI(map, counties, path) {
@@ -244,14 +256,14 @@
       .attr("fill", "lightblue")
       .attr("stroke", "white")
       .attr("translate", [300, 300]);
-    d3.select("#gini-legend").attr("display", "none")
-    d3.select("#gini-annotation").attr("display", "none")
-    d3.select(".tooltip").attr("visibility", "hidden")
+    d3.select("#gini-legend").style("display", "none")
+    d3.select("#gini-annotation").style("display", "none")
+    d3.select(".tooltip").style("visibility", "hidden")
     hideTooltip()
   }
 
   function showGINI(map, counties, path, gini, GINIScale) {
-    d3.selectAll(".tech-company-tooltip").attr("display", "none")
+    d3.selectAll(".tech-company-tooltip").style("display", "none")
     map
       .selectAll("path.county")
       .data(counties.features)
@@ -268,19 +280,19 @@
       })
       .attr("stroke", "white")
       .attr("translate", [300, 300]);
-    d3.select("#gini-legend").attr("display", "")
-    d3.select("#gini-annotation").attr("display", "")
-    d3.select(".tooltip").attr("visibility", "visible")
+    d3.select("#gini-legend").style("display", "")
+    d3.select("#gini-annotation").style("display", "")
+    d3.select(".tooltip").style("visibility", "visible")
     hideTooltip()
   }
 
   function showBrush() {
-    d3.select("#graph").attr("visibility", "visible")
+    d3.select("#graph").style("visibility", "visible")
     d3.select("#filter-indicator").style("display", "")
   }
 
   function hideBrush() {
-    d3.select("#graph").attr("visibility", "hidden")
+    d3.select("#graph").style("visibility", "hidden")
     d3.select("#filter-indicator").style("display", "none")
   }
 
@@ -393,7 +405,6 @@
 
     // housing
     const housingExtent = d3.extent(housing, d => Number(d['median_house_value']))
-    console.log('housing', housingExtent, housing)
 
     const housingColorRange = [
       "#FFFF00",
@@ -428,7 +439,8 @@
 
     drawLegend(d3.select("#gini-legend"), GINIScale)
     drawLegend(d3.select("#house-legend"), housingScale)
-    d3.select("#house-legend").attr("display", "none")
+    d3.select("#house-legend").style("display", "none")
+    hideCompanyIntro()
     hideBrush()
     hideCircles(layer)
   };

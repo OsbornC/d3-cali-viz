@@ -60,7 +60,16 @@
                 box-shadow: 2px 4px 5px whitesmoke;
             }
 
-            .parallax {
+            .parallax-company {
+                background-image: url("static/img/silicon-valley.jpeg");
+                min-height: 1000px;
+                background-attachment: fixed;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+
+            .parallax-homeless {
                 background-image: url("static/img/homeless.jpeg");
                 min-height: 1000px;
                 background-attachment: fixed;
@@ -189,7 +198,7 @@
         </div>
     </div>
 
-    <div class="parallax">
+    <div class="parallax-company">
         <div class="box1">
             <svg id="gini-legend" height="50" width="800">
                 <text x="10" y="20">Gini Legend:</text>
@@ -197,7 +206,14 @@
             <svg id="house-legend" height="50" width="800">
                 <text x="10" y="20">House Price Legend(Dollars):</text>
             </svg>
-            <svg id="cali-map" height="400" width="800" style="margin:0px"></svg>
+
+            <svg id="cali-map" height="400" width="800" style="margin:0px">
+            </svg>
+            <g id="company-intro">
+                <h3 style="text-align: center">Zoom in and you can find almost every tech company you know in the
+                    map!
+                </h3>
+            </g>
             <g id="filter-indicator">
                 <text>Use the fliter below: X shows the annual income in ten thousands dollars, Y shows the number of
                     instance<br>
@@ -211,7 +227,7 @@
         </div>
     </div>
 
-    <div class="parallax">
+    <div class="parallax-company">
         <div class="box">
             <div style="text-align: center;">
                 <h3> San Francisco Bay Area Super-rich Assets (Million Dollars) </h3>
@@ -221,7 +237,7 @@
     </div>
     </div>
 
-    <div class="parallax">
+    <div class="parallax-homeless">
         <div class="box">
             <div style="text-align: center;">
                 <h3> San Francisco Bay Area Employment Rate during the Epidemic </h3>
@@ -230,7 +246,7 @@
         </div>
     </div>
     </div>
-    <div class="parallax">
+    <div class="parallax-homeless">
         <div class="box">
             <div style="text-align: center;">
                 <h3> San Francisco Crime </h3>
@@ -238,7 +254,7 @@
             <div id="drop"></div><svg id="crime" height="500" width="800"></svg>
         </div>
     </div>
-    <div class="parallax">
+    <div class="parallax-homeless">
         <div class="box">
             <div style="text-align: center;">
                 <h3> San Francisco Crime Type</h3>
