@@ -113,12 +113,11 @@
             .on("mouseenter", function (e) {
                 const _this = this;
                 const datum = d3.select(this).datum();
-                console.log('hover', datum["19 Month % Wealth Growth"], datum["Industry"], datum["Wealth_before"], datum["Wealth_after"])
                 _this.style = "opacity: 0.8;";
                 billionaireName.text(`Billionaire name: ${datum["Name"]}`)
                 billionaireGrowth.text(`19 month wealth growth percentage: ${datum["19 Month % Wealth Growth"]}`)
-                billionaireBefore.text(`Wealth before: ${datum["Wealth_before"]} Billion Dollars`)
-                billionaireAfter.text(`Wealth after: ${datum["Wealth_after"]} Billion Dollars`)
+                billionaireBefore.text(`Wealth before: ${datum["Wealth_before"]} Million Dollars`)
+                billionaireAfter.text(`Wealth after: ${datum["Wealth_after"]} Million Dollars`)
                 billionaireIndustry.text(`Industry: ${datum["Industry"]}`)
             })
             .on("mouseleave", function (e) {
