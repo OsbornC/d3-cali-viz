@@ -13,8 +13,6 @@
   const svgWidth = svg.attr("width");
   const svgHeight = svg.attr("height");
 
-
-
   function drawGINI(map, counties, path, gini, GINIScale) {
     map
       .data(counties.features)
@@ -47,6 +45,7 @@
   function handleHousingClick(layer, housing, map, housingScale, counties, path) {
     currentTab = 'HOUSING'
     d3.selectAll(".tech-company-tooltip").attr("display", "none")
+    d3.select("#house-legend").attr("display", "")
     layer
       .selectAll("circle.housing")
       .data(housing)
@@ -90,6 +89,7 @@
   function handleCompanyClick(layer, data, companyDetail, companyURL, companyAddress, companyCity, map, counties, path) {
     currentTab = 'TECH'
     d3.selectAll(".tech-company-tooltip").attr("display", "")
+    d3.select("#house-legend").attr("display", "none")
     layer
       .selectAll("circle.company")
       .data(data)
@@ -354,9 +354,6 @@
 
     const housingAgeExtent = d3.extent(housing, d => d["housing_median_age"]);
     const housingAgeScale = d3.scaleLinear().domain(d3.extent(housingAgeExtent)).range([100, 0]);
-    console.log('scale', housingAgeScale)
-
-
     const incomeExtent = d3.extent(housing, d => d["median_income"]);
     const incomeMap = housing.map(d => d["median_income"])
     const incomeScale = d3.scaleLinear().domain(d3.extent(incomeExtent)).range([0, 150]);
@@ -366,7 +363,6 @@
     const histogram = d3.histogram().domain(incomeExtent).thresholds(10)
     const counts = histogram(incomeMap)
     const countsExtent = d3.extent(counts, d => d.length)
-    console.log('counts', incomeExtent)
     const yScale = d3.scaleLinear().domain(countsExtent)
       .range([100, 0])
     const yAxis = d3.axisLeft(yScale).tickFormat(d3.format(".2s"));
@@ -431,7 +427,8 @@
     giniButton(controllers, layer, drawGINI, map, counties, path, gini, GINIScale)
 
     drawLegend(d3.select("#gini-legend"), GINIScale)
-    drawLegend(d3.select("#legend2"), housingScale)
+    drawLegend(d3.select("#house-legend"), housingScale)
+    d3.select("#house-legend").attr("display", "none")
     hideBrush()
     hideCircles(layer)
   };

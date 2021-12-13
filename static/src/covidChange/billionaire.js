@@ -113,9 +113,13 @@
             .on("mouseenter", function (e) {
                 const _this = this;
                 const datum = d3.select(this).datum();
-                billionaireInfo.text(`19 Month % Wealth Growth: ${datum["19 Month % Wealth Growth"]}`)
                 console.log('hover', datum["19 Month % Wealth Growth"], datum["Industry"], datum["Wealth_before"], datum["Wealth_after"])
                 _this.style = "opacity: 0.8;";
+                billionaireName.text(`Billionaire name: ${datum["Name"]}`)
+                billionaireGrowth.text(`19 month wealth growth percentage: ${datum["19 Month % Wealth Growth"]}`)
+                billionaireBefore.text(`Wealth before: ${datum["Wealth_before"]} Billion Dollars`)
+                billionaireAfter.text(`Wealth after: ${datum["Wealth_after"]} Billion Dollars`)
+                billionaireIndustry.text(`Industry: ${datum["Industry"]}`)
             })
             .on("mouseleave", function (e) {
                 const _this = this;
@@ -171,17 +175,34 @@
             .text("After Pendamic")
 
         // annotation
-        const billionaireInfo = controllers
+        const billionaireName = controllers
             .append("text")
             .attr("class", "billionaire-info")
             .attr("x", 5)
             .attr("y", 15)
-
-        const billionaireInfo2 = controllers
+        const billionaireGrowth = controllers
             .append("text")
             .attr("class", "billionaire-info")
             .attr("x", 5)
             .attr("y", 35)
+
+        const billionaireBefore = controllers
+            .append("text")
+            .attr("class", "billionaire-info")
+            .attr("x", 5)
+            .attr("y", 55)
+
+        const billionaireAfter = controllers
+            .append("text")
+            .attr("class", "billionaire-info")
+            .attr("x", 5)
+            .attr("y", 75)
+
+        const billionaireIndustry = controllers
+            .append("text")
+            .attr("class", "billionaire-info")
+            .attr("x", 5)
+            .attr("y", 95)
 
 
         window.addEventListener("scroll", scrollAnimation);
