@@ -5,11 +5,11 @@ function drawLegend(legend, legendColorScale) {
   const barHeight = 20;
 
   const pixelScale = d3.scaleLinear()
-                       .domain([100, legendWidth - 200])
-                       .range([legendExtent[0], legendExtent[1]]);
+    .domain([100, legendWidth - 200])
+    .range([legendExtent[0], legendExtent[1]]);
   const barScale = d3.scaleLinear()
-                     .domain([legendExtent[0], legendExtent[1]])
-                     .range([100, legendWidth - 200]);
+    .domain([legendExtent[0], legendExtent[1]])
+    .range([100, legendWidth - 200]);
 
   const barAxis = d3.axisBottom(barScale);
 
@@ -18,12 +18,12 @@ function drawLegend(legend, legendColorScale) {
   }
   legend
     .append("g")
-    .attr("transform", "translate(" + 20 + "," + (barHeight + 5) + ")")
+    .attr("transform", "translate(" + 150 + "," + (barHeight + 5) + ")")
     .call(barAxis);
 
   let bar = legend
     .append("g")
-    .attr("transform", "translate(" + 20 + "," + 0 + ")");
+    .attr("transform", "translate(" + 150 + "," + 0 + ")");
   for (let i = 100; i < legendWidth - 200; i++) {
     bar
       .append("rect")

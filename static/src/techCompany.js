@@ -431,6 +431,7 @@
     giniButton(controllers, layer, drawGINI, map, counties, path, gini, GINIScale)
 
     drawLegend(d3.select("#gini-legend"), GINIScale)
+    drawLegend(d3.select("#legend2"), housingScale)
     hideBrush()
     hideCircles(layer)
   };

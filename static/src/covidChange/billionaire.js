@@ -45,6 +45,7 @@
             .attr("transform", `translate(${margin.left},${chartHeight+margin.top+10})`)
             .call(bottomAxis);
 
+
         function chartAnimation() {
             // Billionaires before pendamic rectangles
             chartArea.selectAll('rect.bar').data(billionData)
@@ -77,15 +78,6 @@
                 .attr("height", nameScale.bandwidth() - 10)
                 .attr("xlink:href", d => `static/img/human_figure/${d.Name}.jpg`)
 
-
-
-            // chartArea.append("image")
-            //     .attr("y", 100)
-            //     .attr("x", 50)
-            //     .attr("width", 40)
-            //     .attr("height", 40)
-            //     .attr("xlink:href", 'img/human_figure/Elon Musk.jpg')
-
             setTimeout(() => {
                 chartArea.selectAll('rect.bar').data(billionData)
                     .join('rect').attr('class', 'bar')
@@ -98,7 +90,8 @@
                     .attr("width", nameScale.bandwidth())
                     .delay(function (d, i) {
                         return (i * 100)
-                    });;
+                    })
+
                 chartArea.selectAll("image")
                     .data(billionData)
                     .join("image")
@@ -115,6 +108,19 @@
             }, 3000)
         }
         chartAnimation()
+
+        chartArea.selectAll("rect.bar")
+            .on("mouseenter", function (e) {
+                const _this = this;
+                const datum = d3.select(this).datum();
+                billionaireInfo.text(`19 Month % Wealth Growth: ${datum["19 Month % Wealth Growth"]}`)
+                console.log('hover', datum["19 Month % Wealth Growth"], datum["Industry"], datum["Wealth_before"], datum["Wealth_after"])
+                _this.style = "opacity: 0.8;";
+            })
+            .on("mouseleave", function (e) {
+                const _this = this;
+                _this.style = "opacity: 1;"
+            })
 
         const controllers = d3.select('svg#controllers2');
         controllers.append("rect")
@@ -134,7 +140,6 @@
             .attr("dominant-baseline", "middle")
             .text("Restart Animation")
             .on('click', chartAnimation)
-
 
         // new lengend
         controllers.append("rect")
@@ -164,6 +169,20 @@
             .attr("text-anchor", "middle")
             .attr("dominant-baseline", "middle")
             .text("After Pendamic")
+
+        // annotation
+        const billionaireInfo = controllers
+            .append("text")
+            .attr("class", "billionaire-info")
+            .attr("x", 5)
+            .attr("y", 15)
+
+        const billionaireInfo2 = controllers
+            .append("text")
+            .attr("class", "billionaire-info")
+            .attr("x", 5)
+            .attr("y", 35)
+
 
         window.addEventListener("scroll", scrollAnimation);
 
