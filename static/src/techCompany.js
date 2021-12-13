@@ -364,22 +364,17 @@
     const brushSvg = d3.select("#graph")
     brushSvg.call(brush)
 
-    const housingAgeExtent = d3.extent(housing, d => d["housing_median_age"]);
-    const housingAgeScale = d3.scaleLinear().domain(d3.extent(housingAgeExtent)).range([100, 0]);
     const incomeExtent = d3.extent(housing, d => d["median_income"]);
     const incomeMap = housing.map(d => d["median_income"])
-    const incomeScale = d3.scaleLinear().domain(d3.extent(incomeExtent)).range([0, 150]);
+    const incomeScale = d3.scaleLinear().domain(d3.extent(incomeExtent)).range([0, 190]);
     const incomeAxis = d3.axisBottom(incomeScale)
-    brushSvg.append("g").attr("transform", `translate(30, 110)`)
+    brushSvg.append("g").attr("transform", `translate(0, 110)`)
       .call(incomeAxis)
     const histogram = d3.histogram().domain(incomeExtent).thresholds(10)
     const counts = histogram(incomeMap)
     const countsExtent = d3.extent(counts, d => d.length)
     const yScale = d3.scaleLinear().domain(countsExtent)
       .range([100, 0])
-    const yAxis = d3.axisLeft(yScale).tickFormat(d3.format(".2s"));
-    brushSvg.append("g").attr("transform", `translate(30, 5)`)
-      .call(yAxis)
     const area = d3.area().x(d => incomeScale(d.x1))
       .y0(yScale(0))
       .y1(d => yScale(d.length))
@@ -390,7 +385,7 @@
       .attr("stroke-width", "2px")
       .attr("opacity", "1")
       .attr("d", area)
-      .attr("transform", `translate(30, 5)`);
+      .attr("transform", `translate(0, 5)`);
 
     function plotZoomed(event) {
       layer.attr("transform", event.transform);
